@@ -1,305 +1,321 @@
 Configuration
 =============
 
-The file **MICA_HOME/conf/application.yml** is to be edited to match your server needs. This file is written in YAML format allowing to specify a hierarchy within the configuration keys. The YAML format uses indentations to express the different levels of this hierarchy. The file is already pre-filled with default values (to be modified to match your configuration), just be aware that you should not modify the indentations. In the following documentation, the configuration keys will be presented using the dot-notation (levels are separated by dots) for readability.
-
-HTTP Server Configuration
--------------------------
-
-Mica server is a web application and as such, you need to specify on which ports the web server should listen to incoming requests.
-
-=============== ==================
-Property        Description
-=============== ==================
-``server.port`` HTTP port number. Generally speaking this port should not be exposed to the web. Use the https port instead.
-``server.host`` Web server host name.
-``https.port``  HTTPS port number.
-=============== ==================
-
-MongoDB Server Configuration
+Fine-tuning Tomcat
 ----------------------------
 
-Mica server will store its data (system configuration, networks, studies, datasets, etc.) in a MongoDB database. You must specify how to connect to this database.
-
-=========================== ===========================
-Property                    Description
-=========================== ===========================
-``spring.data.mongodb.uri`` MongoDB URI. `Read Standard Connection <https://docs.mongodb.com/manual/reference/connection-string/>`_ String Format to learn more.
-=========================== ===========================
-
-By default MongoDB does not require any user name, it is highly recommended to configure the database with a user. This can be done by enabling the Client Access Control procedure.
-
-Follow these steps to enable the Client Access Control on your server:
-
-* create a user with the proper roles on the target databases
-* restart the MongoDB service with Client Access Control enabled
+For general tips related to Tomcat, see `<http://tomcat.apache.org>`_.
 
 .. note::
 
-  Once the MongoDB service runs with Client Access Control enabled, all database connections require authentication.
+  The following tips assume that you are using Sun's Java Virtual Machine
 
-**MongoDB User Creation Example**
+General Comments about Tomcat Memory Settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The example below creates the *micaadmin* user for *mica* database:
+On most default Tomcat installations, the memory allocated to the service is insufficient. You must increase the memory allocated to Tomcat by
+tweaking two memory settings.
 
-.. code-block:: javascript
+* *Xmx*
+* *XX:MaxPermSize*
 
-  use admin
+In the OS-specific procedures below (see Allocating Memory on Ubuntu and Allocating Memory on Windows ), we assume that your server has
+2GB of RAM. We set *-Xmx* to 1024 and *-XX:MaxPermSize* to 256m.
 
-  db.createRole({
-    role: 'obibauser',
-    privileges:[{
-        resource: {anyResource: true},
-        actions: ['anyAction']
-    }],
-    roles: []
-  });
+* If your server has more than 2GB of RAM, you can increase the *-Xmx* setting. It is not necessary to increase the *-XX:MaxPermSize* setting.
+* If your server has less than 2GB of RAM, you can decrease the *-Xmx* and the *-XX:MaxPermSize* settings. Try to keep the same ratio (4:1). **Do not** allocate less than 128m to *-XX:MaxPermSize*.
 
-  db.createUser({
-    user: "micaadmin",
-    pwd: "micaadmin",
-    roles: ['obibauser']
-  });
+Using Tomcat on Ubuntu
+^^^^^^^^^^^^^^^^^^^^^^
 
-Here is the required configuration snippet in **/etc/mica/application.yml** for the above user:
+Two issues need to be addressed when running Tomcat on Ubuntu: insufficient memory and the security manager.
 
-.. code-block:: yaml
+To allocate memory on Ubuntu
+""""""""""""""""""""""""""""
 
-  spring:
-    data:
-      mongodb:
-        uri: mongodb://micaadmin:micaadmin@localhost:27017/mica?authSource=admin
+To allocate memory to Tomcat, you need to create an environment variable. If Tomcat was installed using apt , you must edit the */etc/default/tomcat6* file as shown below:
 
-.. note::
+.. code-block:: bash
+  
+  #/etc/default/tomcat6
 
-  Mica requires either **clusterMonitor** or **readAnyDatabase** role on the *admin* database for validation operations. The first role is useful for a cluster setup and the latter if your MongoDB is on a single server.
+  JAVA_OPTS="-Xmx1024M -XX:MaxPermSize=256M
 
-Opal Server Configuration
--------------------------
-
-Mica server uses Opal to retrieve data dictionaries, data summaries and variable taxonomies. This server is sometimes referred as the Opal primary server (secondary servers can be defined at study level). If you want to publish datasets, the following Opal connection details needs to be configured.
-
-================= ================================================================
-Property          Description
-================= ================================================================
-``opal.url``      Opal server URL. It is highly recommended to use https protocol.
-``opal.username`` User name for connection to Opal server.
-``opal.password`` User password for connection to Opal server.
-================= ================================================================
-
-Mica server should connect to Opal and access to some selected tables only with the lowest level of permissions (View dictionary and summary, i.e. no access to individual data). Please refer to the Opal Table Documentation for more details about the permissions that can be applied on a table.
-
-Mica Server Configuration
---------------------------
-
-Mica server uses Mica as a user directory and as a notification emails service. From the Mica point of view, Mica is not a user: it is an application. Each time Mica needs a service from Mica, it will provide the information necessary to its identification. The application credentials registered in Mica are to be specified in this section. If you want to specify advanced permissions or allow users to submit data access requests, the following Mica connection details needs to be configured.
-
-========================== ================================================================
-Property                   Description
-========================== ================================================================
-``agate.url``              Mica server URL. It is highly recommended to use https protocol.
-``agate.application.name`` Application name for connection to Mica server.
-``agate.application.key``  Application key for connection to Mica server.
-========================== ================================================================
-
-Shiro Configuration
--------------------
-
-`Shiro <http://shiro.apache.org/>`_ is the authentication and authorization framework used by Mica. There is a minimum advanced configuration that can be applied to specify how Shiro will hash the password. In practice this only applies to the users defined in the shiro.ini file. Default configuration is usually enough.
-
-=================================== ================================
-Property                            Description
-=================================== ================================
-``shiro.password.nbHashIterations`` Number of re-hash operations.
-``shiro.password.salt``             Salt to be applied to the hash.
-=================================== ================================
-
-Elasticsearch Configuration
----------------------------
-
-Mica server embeds `Elasticsearch <https://www.elastic.co/>`_ as its search engine. Elasticsearch is a key functionality of Mica as the process of publication consist in indexing documents (networks, studies, variables etc.) in the search engine. Advanced queries can be applied on the published documents. Elasticsearch is embeded, i.e. it is not an external application. Mica's Elasticsearch can be part of a cluster of Elasticsearch cluster. The configuration of the Elasticsearch node and how it should connect to the other nodes of the cluster can be specified in this section. Default configuration is usually enough.
-
-=================================== ================================
-Property                            Description
-=================================== ================================
-``elasticsearch.dataNode``          Boolean to specify if this node has data or if it is just a proxy to other nodes in a cluster.
-``elasticsearch.clusterName``       Cluster identifier.
-``elasticsearch.shards``            Number of shards.
-``elasticsearch.replicas``          Number of replicas.
-``elasticsearch.settings``          A string in JSON or YAML format to define other elasticsearch settings. See Elasticsearch Documentation for advanced settings.
-``elasticsearch.transportClient``   Boolean to indicate to use the Transport Client instead of creating an elasticsearch Node.
-``elasticsearch.transportAddress``  Elasticsearch service IP address and port when using the Transport Client, defaults to the localhost at port 9300.
-``elasticsearch.transportSniff``    Boolean to indicate the Transport Client to collect IP addresses from nodes in an elasticsearch cluster.
-=================================== ================================
-
-**Elasticsearch Cluster**
-
-Mica can be set to join or connect to an Elasticsearch cluster. You need to set *elasticsearch.clusterName* to the name of the cluster you want to join. There are different possible `cluster topologies <https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html>`_, each of which has different resource utilization profiles in terms or memory and CPU.
-
-.. note::
-
-  To avoid API incompatibility issues, the recommended version of `Elasticsearch server is 2.4 <https://www.elastic.co/downloads/past-releases/elasticsearch-2-4-4>`_.
-
-
-An example of a configuration to join an elasticsearch cluster using a `Client Node <https://www.elastic.co/guide/en/elasticsearch/reference/2.2/modules-node.html#client-node>`_:
-
-.. code-block:: yaml
-
-  elasticsearch:
-    clusterName: mycluster
-    dataNode: false
-    settings: '{"node.master": false, "node.local": false}'
-
-An example of a configuration using the transport client:
-
-.. code-block:: yaml
-
-  elasticsearch:
-    clusterName: mycluster
-    transportClient: true
-    transportAddress: "myhost:9300"
-
-**Elasticsearch Server Configuration**
-
-Mica uses the scripting capabilities of Elasticsearch. All the machines in the Elasticsearch cluster should have the scripting module enabled by setting the following values in the *elasticsearch.yml* configuration file (location of this file depends on how your elasticsearch service is installed):
-
-.. code-block:: yaml
-
-  script:
-    inline: true
-    indexed: true
-
-User Directories
-----------------
-
-The security framework that is used by Mica for authentication, authorization etc. is `Shiro <http://shiro.apache.org/>`_. Configuring Shiro for Mica is done via the file **MICA_HOME/conf/shiro.ini**. See also `Shiro ini file documentation <http://cwiki.apache.org/confluence/display/SHIRO/Configuration#Configuration-INISections>`_.
-
-.. note::
-
-  Default configuration is a static user 'administrator' with password 'password' (or the one provided while installing Mica Debian/RPM package).
-
-By default Mica server has several built-in user directories (in the world of Shiro, a user directory is called a realm):
-
-* a file-based user directory (**shiro.ini** file),
-* the user directory provided by Agate.
-
-Although it is possible to register some additional user directories, this practice is not recommended as Agate provides more than a service of authentication (user profile, notification emails etc.).
-
-In the world of Shiro, a user directory is called a *realm*.
-
-**File Based User Directory**
-
-The file-based user directory configuration file **MICA_HOME/conf/shiro.ini**.
-
-.. note::
-
-  It is not recommended to use this file-based user directory. It is mainly dedicated to define a default system super-user and a password for the anonymous user.
-
-For a better security, user passwords are encrypted with a one way hash such as sha256.
-
-The example shiro.ini file below demonstrates how encryption is configured.
+To disable the security manager on Ubuntu
+"""""""""""""""""""""""""""""""""""""""""
+Comment out the *#TOMCAT6_SECURITY=yes* and add the *TOMCAT6_SECURITY=no* line as shown below.
 
 .. code-block:: bash
 
-  # =======================
-  # Shiro INI configuration
-  # =======================
+  #/etc/default/tomcat6
 
-  [main]
-  # Objects and their properties are defined here,
-  # Such as the securityManager, Realms and anything else needed to build the SecurityManager
+  # Use the Java security manager? (yes/no, default: yes)
+  # WARNING: Do not disable the security manager unless you understand
+  # the consequences!
+  #TOMCAT6_SECURITY=yes
+  TOMCAT6_SECURITY=no
 
+Using Tomcat as a Windows Service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  [users]
-  # The 'users' section is for simple deployments
-  # when you only need a small number of statically-defined set of User accounts.
-  #
-  # Password here must be encrypted!
-  # Use shiro-hasher tools to encrypt your passwords:
-  #   DEBIAN:
-  #     cd /usr/share/mica2/tools && ./shiro-hasher -p
-  #   UNIX:
-  #     cd <MICA_DIST_HOME>/tools && ./shiro-hasher -p
-  #   WINDOWS:
-  #     cd <MICA_DIST_HOME>/tools && shiro-hasher.bat -p
-  #
-  # Format is:
-  # username=password[,role]*
-  administrator = $shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=,mica-administrator
-  anonymous = $shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=
+Two issues need to be addressed when running Tomcat as a service on Windows: insufficient memory and making the printer available to
+Tomcat.
 
-  [roles]
-  # The 'roles' section is for simple deployments
-  # when you only need a small number of statically-defined roles.
-  # Format is:
-  # role=permission[,permission]*
-  mica-administrator = *
+To allocate memory on Windows
+"""""""""""""""""""""""""""""
 
-Passwords must be encrypted using shiro-hasher tools (included in Mica tools directory):
+#. Open the Apache Tomcat Properties dialog in either of these ways:
+   
+   * If you have a Tomcat icon on your taskbar, right-click it and select Configure.
+   * From the Start menu, select All Programs > Apache Tomcat 6.0 > Configure Tomcat.
+
+#. Select the Java tab. See screenshot below.
+#. Add this line in the Java Options field: -XX:MaxPermSize=256M .
+#. In the Maximum memory pool field , enter the value 1024
+
+.. note::
+
+  The Maximum memory pool setting is equivalent to passing the -Xmx argument to Java.
+
+.. image:: /images/allocateMemoryOnWindows.jpg
+
+To enable printing from Tomcat
+""""""""""""""""""""""""""""""
+
+When running Tomcat as a Windows Service, make sure that the user running the Tomcat service can use the printer. This is not the case by
+default. Permissions must be given to the tomcat user in order for Onyx to see the printer you wish to use.
+
+Configuring MySQL
+------------------
+
+To check the database connection settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The default Onyx connection to the MySQL server uses the settings shown in the table below.
+They are defined in the *onyx-config.properties* file, which is Onyx's main configuration file.
+
+===================== ===========
+Settings              value
+===================== ===========
+hostname\:port        localhost\:3306
+username              Onyx
+password              onyx-demo
+===================== ===========
+
+Your organization may have already changed the defaults. You can check the values in the *onyx-config.properties* file ( `What You Need from Your organization <installation.html#what-you-need-from-your-organization>`_ ). If the settings are different from the defaults shown in the table , note them so you can use them when Creating a
+Database for Onyx in MySQL.
 
 .. code-block:: bash
 
-  cd /usr/share/mica2/tools
-  ./shiro-hasher -p
+    #WEB-INF/config/onyx-config.properties
+    # Database configuration (if applicable)
+    [...]
+    # MySQL
+    org.obiba.onyx.datasource.driver=com.mysql.jdbc.Driver
+    org.obiba.onyx.datasource.url=jdbc:mysql://localhost:3306/onyx
+    org.obiba.onyx.datasource.username=onyx
+    org.obiba.onyx.datasource.password=onyx-demo
+    org.obiba.onyx.datasource.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+    org.obiba.onyx.datasource.validationQuery=SELECT 1;
+    org.obiba.onyx.datasource.testOnBorrow=true
 
-Reverse Proxy Configuration
----------------------------
+To create a database for Onyx in MySQL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Mica server can be accessed through a reverse proxy server.
+You must create a database for Onyx in MySQL, and you must also set up a user that has all privileges on that database. When Onyx starts for
+the first time, it will automatically create its schema in this database.
 
-**Apache**
+In a MySQL client:
 
-Example of Apache directives that:
+#. Execute the command: *create database onyx* (or whatever name that defined at the end of this line in *onyx-config.properties:org.obiba.onyx.datasource.url=jdbc:mysql://localhost:3306/onyx*)
+#. Ensure that the MySQL users ( onyx in this case) granted all privileges on that database instance (CREATE TABLE, ALTER, and so on)
 
-* redirects HTTP connection on port 80 to HTTPS connection on port 443,
-* specifies acceptable protocols and cipher suites,
-* refines organization's specific certificate and private key.
+Alternatively, in the MySQL Administrator application:
 
-.. code-block:: text
+#. Select **Catalogs**.
+#. Right-click in the field that lists the existing schemata, and select **Create New Schema**.
 
-  <VirtualHost *:80>
-      ServerName mica.your-organization.org
-      ProxyRequests Off
-      ProxyPreserveHost On
-      <Proxy *>
-          Order deny,allow
-          Allow from all
-      </Proxy>
-      RewriteEngine on
-      ReWriteCond %{SERVER_PORT} !^443$
-      RewriteRule ^/(.*) https://mica.your-organization.org:443/$1 [NC,R,L]
-  </VirtualHost>
-  <VirtualHost *:443>
-      ServerName mica.your-organization.org
-      SSLProxyEngine on
-      SSLEngine on
-      SSLProtocol All -SSLv2 -SSLv3
-      SSLHonorCipherOrder on
-      # Prefer PFS, allow TLS, avoid SSL, for IE8 on XP still allow 3DES
-      SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+AESG CM EECDH EDH+AESGCM EDH+aRSA HIGH !MEDIUM !LOW !aNULL !eNULL !LOW !RC4 !MD5 !EXP !PSK !SRP !DSS"
-      # Prevent CRIME/BREACH compression attacks
-      SSLCompression Off
-      SSLCertificateFile /etc/apache2/ssl/cert/your-organization.org.crt
-      SSLCertificateKeyFile /etc/apache2/ssl/private/your-organization.org.key
-      ProxyRequests Off
-      ProxyPreserveHost On
-      ProxyPass / https://localhost:8445/
-      ProxyPassReverse / https://localhost:8445/
-  </VirtualHost>
+#. When prompted for a name for the new schema, enter onyx or whatever name was defined at the end of this line in *onyx-config.properties: org.obiba.onyx.datasource.url=jdbc:mysql://localhost:3306/onyx*).
+#. Add a new user (with the name onyx or whatever value is defined in this line of *onyx-config.properties: org.obiba.onyx.datasource.username=onyx*).
+#. Assign all priveleges on the new database to the new user.
 
-For performance, you can also activate Apache's compression module (mod_deflate) with the following settings (note the json content type setting) in file */etc/apache2/mods-available/deflate.conf*:
+Setting Up an SSL Connection
+-----------------------------
 
-.. code-block:: text
+To set up Onyx to run over a secured connection on the local network, you must do two tasks on the Onyx server: `create a keystore <configuration.html#to-create-a-keystore-for-the-ssl-connection>`_ and `configure Tomcat to use an SSL connection <configuration.html#to-configure-tomcat-to-use-an-ssl-connection>`_.
 
-  <IfModule mod_deflate.c>
-    <IfModule mod_filter.c>
-        # these are known to be safe with MSIE 6
-        AddOutputFilterByType DEFLATE text/html text/plain text/xml
-        # everything else may cause problems with MSIE 6
-        AddOutputFilterByType DEFLATE text/css
-        AddOutputFilterByType DEFLATE application/x-javascript application/javascript application/ecmascript
-        AddOutputFilterByType DEFLATE application/rss+xml
-        AddOutputFilterByType DEFLATE application/xml
-        AddOutputFilterByType DEFLATE application/json
-    </IfModule>
-  </IfModule>
+.. note::
+  The procedures in this section use the following shortcuts to refer to certain directories:
+  JAVA_HOME = the directory where java is installed
+  CATALINA_BASE = the directory where Tomcat is installed
+
+To create a keystore for the SSL connection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#. From the JAVA_HOME directory, execute this command:
+
+.. code-block:: bash
+
+  ./bin/keytool -genkey -alias tomcat -keyalg RSA -keystore CATALINA_BASE/keystore/onyx.jks.
+
+2. When prompted, enter the requested information for the certificate and a new password.
+#. Export the certificate to a file. You will import this file on each of the client workstations. See Setting Up the SSL Connection to Onyx.
+
+To configure Tomcat to use an SSL connection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Edit the file *CATALINA_BASE\...\conf\server.xml* as follows:
+
+1. Comment out this section:
+
+.. code-block:: bash
+  
+    <!-- Define a non-SSL HTTP/1.1 Connector on port 8080 -->
+      <!-- <Connector 
+        port="8080" maxHttpHeaderSize="8192"
+        maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+        enableLookups="false" redirectPort="8443" acceptCount="100"
+        connectionTimeout="20000" disableUploadTimeout="true" /> -->
+
+2. Remove comments from this section:
+
+.. code-block:: bash
+
+   <!-- Define a SSL HTTP/1.1 Connector on port 8443 -->
+      <Connector 
+        port="8443" maxHttpHeaderSize="8192"
+        maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+        enableLookups="false" disableUploadTimeout="true"
+        acceptCount="100" scheme="https" secure="true"
+        clientAuth="false" sslProtocol="TLS"/>
+
+3. In the *< Connector>* element, add the following attributes:
+
+.. code-block:: bash
+
+   keystoreFile="keystore\onyx.jks" keystorePass="password"
+
+where *"keystore\onyx.jks"* and *"password"* are the values you entered when Creating a `keystore for the SSL connection <configuration.html#to-create-a-keystore-for-the-ssl-connection>`_.
+
+Generating a Key and Certificate for Data Export
+------------------------------------------------
+
+Onyx can export data to one or more export destinations (see Configuring Data Export and Purge ). If your organization has decided to encrypt participant data upon export to a articular destination, you must generate a key and certificate for that destination. 
+You can check whether or not data is supposed to be encrypted on export, look in the file export-destinations.xml which is in your custom *-onyx.war* file (`What You Need from Your Organization <installation.html#what-you-need-from-your-organization>`_). If any of the destinations include an *<encrypt>* element, the data will be encrypted on export. 
+You will need the key and certificate when you carry out the procedure for `Deploying Onyx <toto>`_. You can use a utility (`like openSSL <https://www.openssl.org/>`_) to generate keys and certificates. For a Windows program that uses openSSL to generate keys and certificates, see `Shining Light Productions <http://slproweb.com/products/Win32OpenSSL.html>`_.
+
+Fine-tuning the Onyx Configuration
+----------------------------------
+
+The global configuration settings for Onyx are contained in the file *onyx-config.properties* . See `What You Need from Your Organization <installation.html#what-you-need-from-your-organization>`_ .As a minimum, you should check the configuration settings listed in this section. If you think other settings need to be fine-tuned, see `Customizing
+the Global Configuration <configToto>`_ in the `Onyx Customization & Configuration Guide <totoCostomize>`_.
+
+To check the application mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Onyx should be configured to run in deployment mode. This is very important since it improve the overall performance of the application. Check
+that the following property *onyx-config.properties* is set to deployment in :
+
+.. code-block:: bash
+
+   # WEB-INF/config/onyx-config.properties
+   # Onyx Web application mode: deployment or development
+      org.obiba.onyx.webapp.configurationType=deployment
+
+To set the printer
+^^^^^^^^^^^^^^^^^^
+
+On startup, Onyx decides which printer to use. Onyx will try to find a printer with a particular name. If that printer does not exist, or does not
+support PostScript printing, then Onyx will fall back to using the system's default printer. If that printer does not support PostScript printing, Onyx
+will not be able to print reports.
+You can change the printer that Onyx should look for at startup by editing this line in *onyx-config.properties*.
+
+.. code-block:: bash
+
+   # WEB-INF/config/onyx-config.properties
+   # Name of printer for PDF printing.
+      org.obiba.onyx.pdfPrinterName=ONYX PDF Printer
+
+To set up the appointment list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Check the input and output directories for the appointment list file. The output directory is optional. The default paths are shown below. They may have been changed in your version of Onyx.
+
+.. code-block:: bash
+
+  # WEB-INF/config/onyx-config.properties
+  # Appointment management
+  # Directory that contains the appointment list files to process dropped by external process
+    org.obiba.onyx.appointments.inputDirectory=WEB-INF/appointments/in
+  # Optional directory that contains the successfully processed files
+    org.obiba.onyx.appointments.outputDirectory=WEB-INF/appointments/out
+  # Schedule for automatic appointment list updates (4am every day)
+    org.obiba.onyx.appointments.schedule=0 0 4 * * ?
+
+2. Create the input and output directories on the Onyx server.
+#. If your organization gave you an appointment list file, put it in the input directory.
+
+To set up the data export directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. Check the export directory setting in onyx-config.properties . The default export directory is target in Onyx's current working directory (usually the Tomcat home directory). It may been changed in your version of Onyx.
+
+.. code-block:: bash
+
+  # WEB-INF/config/onyx-config.properties
+  # System path where to export Onyx Data
+    org.obiba.onyx.export.path=target
+
+2. Create the export directory on the Onyx server.
+
+To set up the keystore for data export
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Check where the keystore file should be written to. The default path and filename are shown below. They may have been changed in your version of Onyx.
+
+.. code-block:: bash
+
+  # WEB-INF/config/onyx-config.properties
+  # Keystore
+    org.obiba.onyx.keystore.file=file:${java.io.tmpdir}/onyxKeyStore.jks
+    org.obiba.onyx.keystore.password=youshouldchangethispassword
+
+2. Change the password for the keystore and save onyx-config.properties .
+#. Create the keystore directory on the Onyx server.
+
+Deploying Onyx
+--------------
+
+To deploy Onyx, you need a war file ( custom-onyx .war) containing a customized version of Onyx. If you do not already have it, see here
+
+.. note::
+   You must enter the custom-onyx part of the war filename when you access Onyx in a browser in the procedure below.
+
+#. Copy the war file to the webapps directory in the Tomcat installation directory *$TOMCAT_HOME/webapps*.
+#. If Tomcat is already running, it should deploy Onyx automatically. To check if Tomcat is running on Windows:
+
+   #. Select Control Panel > Administrative Tools > Services > Apache Tomcat
+   #. Click Start if Tomcat is not running. Onyx will be deployed when Tomcat starts.
+
+#. Check that you can access Onyx by opening a browser and pointing it to: http://localhost:8080/custom-onyx . If you cannot access Onyx, try restarting Tomcat. If you still have trouble, see `Troubleshooting <#troubleshootings>`_
+#. When you access Onyx for the first time, you must complete the Onyx setup page (see the screenshot below) as follows:
+
+   #. Enter details about the Onyx instance (study name, site name and site id).
+   #. If you configured Onyx to Generate Participant Identifiers Automatically, you will have to specify the Identifier Prefix and the First Indentifier (starting point for generating the identifiers). See `Configuring Participant ID Generator <#configure>`_ for more details about generating identifiers.
+   #. Set up an account for the Onyx Administrator.
+   #. Set the Session Timeout (minutes) to at least 45 or 60 (which should be enough for any physical measurements that must be performed).
+   #. If your organization will encrypt participant data upon export, copy and paste the certificate you generated for this purpose into the field provided. If you did not generate a certificate yet, see `Generating a Key and Certificate for Data Export <configuration.html#generating-a-key-and-certificate-for-data-export>`_.
+
+.. image:: /images/keyGeneration.jpeg
+
+.. note::
+    Take note of these values for future reference:
+
+    * Administrator's user name and password. You will always need them to log in to Onyx.
+    * Collection Site Id. This value will be used in the appointment list file. If your organization      has or will have several sites (each with its own Onyx server), each site should have a unique    Id. The value can be alphanumeric, but should not contain spaces.
+
+Checking the Deployment
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Here are a few items to check after you have deployed Onyx:
+
+* If your data will be encrypted upon export (see `Generating a Key and Certificate for Data Export <configuration.html#generating-a-key-and-certificate-for-data-export>`_), check that the file *onyxKeyStore.jks* was created at the location defined by the property *org.obiba.onyx.keystore.file* in *onyx-config.properties*.
+* If you put an appointment list file in the input directory (see `Setting up the appointment list <configuration.html#to-set-up-the-appointment-list>`_), check that you can update the appointmentlist from the Participants tab of the Onyx user interface.
