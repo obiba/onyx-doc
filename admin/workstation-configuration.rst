@@ -11,12 +11,12 @@ Registering Instruments
 -----------------------
 
 An instrument must be registered on the workstation(s) with which it will be used. An instrument can be reserved for one workstation or it can be shared by several **workstations**.
-This is done on the Workstation page of the Onyx user interface, as explained in the :doc:`Onyx User Guide </user-guide/index>`.
+This is done on the Workstation page of the Onyx user interface, as explained in the :doc:`Onyx User Guide </user-guide/introduction/index>`.
 
 Installing Proprietary Software for Instruments
 -----------------------------------------------
 
-If your organization has chosen to use any of these `electronic instruments <https://www.obiba.org/pages/products/onyx#supportedInstruments>`_ (except those manufactured by Tanita), you must install the
+If your organization has chosen to use any of these `electronic instruments <https://www.obiba.org/pages/products/onyx#supported-instruments>`_ (except those manufactured by Tanita), you must install the
 instrument's proprietary software on the workstation with which the instrument will be used.
 
 General Troubleshooting for Instruments

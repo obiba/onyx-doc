@@ -77,7 +77,7 @@ To allocate memory on Windows
 
   The Maximum memory pool setting is equivalent to passing the -Xmx argument to Java.
 
-.. image:: /images/allocateMemoryOnWindows.jpg
+.. image:: /images/allocateMemoryOnWindows.png
 
 To enable printing from Tomcat
 """"""""""""""""""""""""""""""
@@ -204,25 +204,22 @@ where *"keystore\onyx.jks"* and *"password"* are the values you entered when Cre
 
 Generating a Key and Certificate for Data Export
 ------------------------------------------------
-
 Onyx can export data to one or more export destinations (see Configuring Data Export and Purge ).
 If your organization has decided to encrypt participant data upon export to a articular destination, you must generate a key and certificate for that destination.
 You can check whether or not data is supposed to be encrypted on export, look in the file export-destinations.xml which is in your custom *-onyx.war* file (:ref:`What You Need from Your organization <what-you-need-from-your-organization>`).
 If any of the destinations include an *<encrypt>* element, the data will be encrypted on export.
-You will need the key and certificate when you carry out the procedure for :doc:`Deploying Onyx <deploying-onyx>`. You can use a utility (`like openSSL <https://www.openssl.org/>`_) to generate keys and certificates. For a Windows program that uses openSSL to generate keys and certificates, see `Shining Light Productions <http://slproweb.com/products/Win32OpenSSL.html>`_.
+You will need the key and certificate when you carry out the procedure for :ref:`Deploying Onyx <deploying-onyx>`. You can use a utility (`like openSSL <https://www.openssl.org/>`_) to generate keys and certificates. For a Windows program that uses openSSL to generate keys and certificates, see `Shining Light Productions <http://slproweb.com/products/Win32OpenSSL.html>`_.
 
 Fine-tuning the Onyx Configuration
 ----------------------------------
-
 The global configuration settings for Onyx are contained in the file *onyx-config.properties* . See :ref:`What You Need from Your organization <what-you-need-from-your-organization>`.
 
 .. Todo link to sections onyx-customization-configuration
 
-As a minimum, you should check the configuration settings listed in this section. If you think other settings need to be fine-tuned, see :doc:`Customizing the Global Configuration <onyx-customization-configuration>` in the :doc:`Onyx Customization & Configuration Guide <onyx-customization-configuration>`.
+As a minimum, you should check the configuration settings listed in this section. If you think other settings need to be fine-tuned, see :ref:`Customizing the Global Configuration <onyx-customization-configuration>` in the :ref:`Onyx Customization & Configuration Guide <onyx-customization-configuration>`.
 
 To check the application mode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 Onyx should be configured to run in deployment mode. This is very important since it improve the overall performance of the application. Check
 that the following property *onyx-config.properties* is set to deployment in :
 
@@ -234,7 +231,6 @@ that the following property *onyx-config.properties* is set to deployment in :
 
 To set the printer
 ^^^^^^^^^^^^^^^^^^
-
 On startup, Onyx decides which printer to use. Onyx will try to find a printer with a particular name. If that printer does not exist, or does not
 support PostScript printing, then Onyx will fall back to using the system's default printer. If that printer does not support PostScript printing, Onyx
 will not be able to print reports.
@@ -248,7 +244,6 @@ You can change the printer that Onyx should look for at startup by editing this 
 
 To set up the appointment list
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 #. Check the input and output directories for the appointment list file. The output directory is optional. The default paths are shown below. They may have been changed in your version of Onyx.
 
 .. code-block:: bash
@@ -279,7 +274,6 @@ To set up the data export directory
 
 To set up the keystore for data export
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 #. Check where the keystore file should be written to. The default path and filename are shown below. They may have been changed in your version of Onyx.
 
 .. code-block:: bash
@@ -292,9 +286,10 @@ To set up the keystore for data export
 2. Change the password for the keystore and save onyx-config.properties .
 #. Create the keystore directory on the Onyx server.
 
+.. _deploying-onyx:
+
 Deploying Onyx
 --------------
-
 To deploy Onyx, you need a war file ( custom-onyx .war) containing a customized version of Onyx. If you do not already have it, see here
 
 .. note::
@@ -311,13 +306,13 @@ To deploy Onyx, you need a war file ( custom-onyx .war) containing a customized 
 
    #. Enter details about the Onyx instance (study name, site name and site id).
    #. | If you configured Onyx to Generate Participant Identifiers Automatically, you will have to specify the Identifier Prefix and the First Indentifier (starting point for generating the identifiers).
-      | See :doc:`Configuring Participant ID Generator <onyx-customization-configuration>` for more details about generating identifiers.
+      | See :ref:`Configuring Participant ID Generator <onyx-customization-configuration>` for more details about generating identifiers.
    #. Set up an account for the Onyx Administrator.
    #. Set the Session Timeout (minutes) to at least 45 or 60 (which should be enough for any physical measurements that must be performed).
    #. | If your organization will encrypt participant data upon export, copy and paste the certificate you generated for this purpose into the field provided.
       | If you did not generate a certificate yet, see :ref:`Generating a Key and Certificate for Data Export <generating-a-key-and-certificate-for-data-export>`.
 
-.. image:: /images/keyGeneration.jpeg
+.. image:: /images/keyGeneration.png
 
 .. note::
     Take note of these values for future reference:
@@ -328,13 +323,12 @@ To deploy Onyx, you need a war file ( custom-onyx .war) containing a customized 
 
 Checking the Deployment
 ^^^^^^^^^^^^^^^^^^^^^^^
-
 Here are a few items to check after you have deployed Onyx:
 
 .. toDo ref to section Setting up the appointment list
 
 * If your data will be encrypted upon export (see :ref:`Generating a Key and Certificate for Data Export <generating-a-key-and-certificate-for-data-export>`), check that the file *onyxKeyStore.jks* was created at the location defined by the property *org.obiba.onyx.keystore.file* in *onyx-config.properties*.
-* If you put an appointment list file in the input directory (see :doc:`Setting up the appointment list <onyx-customization-configuration>`), check that you can update the appointment list from the Participants tab of the Onyx user interface.
+* If you put an appointment list file in the input directory (see :ref:`Setting up the appointment list <onyx-customization-configuration>`), check that you can update the appointment list from the Participants tab of the Onyx user interface.
 
 .. _troubleshooting:
 
@@ -348,7 +342,6 @@ Miscellaneous
 
 Consent Form Submission Problems
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 You may encounter an error when attempting to submit a consent form, especially a large multi-page consent form written in a double-byte character set.
 This error occurs because the consent form is too large to be stored in the database. To get around this, you must modify the MySql database settings to allow storage of larger amounts of data.
 The configuration file that you must edit is *my.ini* on Windows and *my.cnf* on Linux.

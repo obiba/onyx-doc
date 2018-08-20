@@ -15,7 +15,7 @@ An assessment centre may have one or more workstations dedicated to collecting d
 
 A Highly Customizable Software Solution
 '''''''''''''''''''''''''''''''''''''''
-Onyx is modular as shown in :ref:`this figure <onyxMainFunctionalities>`. The Onyx engine is a backbone into which independent data collection components are inserted.
+Onyx is modular as shown in :ref:`this figure <onyx-main-functionalities>`. The Onyx engine is a backbone into which independent data collection components are inserted.
 Onyx is configurable which means certain stages may or may not be included in your version of Onyx. For example, your study may not accept volunteer participants.
 And if a stage is included, it can be fine-tuned to meet the requirements of your study.
 For example, for your study Onyx may be configured to only accept electronic signatures for consent forms, whereas for another study Onyx may accept electronic or handwritten signatures.
@@ -23,7 +23,7 @@ Onyx is also customizable which means certain stages are tailor-made for each re
 
 
 
-.. _onyxMainFunctionalities:
+.. _onyx-main-functionalities:
 .. figure:: /images/onyxMainFunctionalities.jpg
    :align: center
    :alt: Onyx treats an interview as a set of interdependent stages

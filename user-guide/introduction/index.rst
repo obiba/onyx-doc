@@ -14,7 +14,6 @@ This chapter covers these topics:
    who-uses-onyx
    what-onyx-does
    who-makes-onyx
-   onyx-documentation
    onyx-user-support
 
 Attachments:
