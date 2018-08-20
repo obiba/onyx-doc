@@ -156,6 +156,14 @@ texinfo_documents = [
 ]
 
 
+rst_epilog = """
+.. |key| image:: /images/key.png
+   :height: 20
+   :width: 20
+.. |proc| image:: /images/procedures.png
+   :height: 20
+   :width: 20
+"""
 # -- Extension configuration -------------------------------------------------
 
 def setup(app):

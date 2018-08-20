@@ -21,7 +21,6 @@ Targeted at individual studies and study consortia, `OBiBa <http://obiba.org/>`_
    admin/installation
    admin/server-configuration
    admin/workstation-configuration
-   admin/onyx-customization-configuration
 
 .. toctree::
    :maxdepth: 1
@@ -29,9 +28,11 @@ Targeted at individual studies and study consortia, `OBiBa <http://obiba.org/>`_
 
    user-guide/introduction/index
    user-guide/getting-started/index
+   user-guide/viewing-participants/index
 
 .. toctree::
    :maxdepth: 1
    :caption: Developer Guide
    
    developer-guide/index
+   developer-guide/onyx-customization-configuration

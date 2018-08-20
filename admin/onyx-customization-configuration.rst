@@ -1,2 +1,0 @@
-Onyx Customization & Configuration Guide
-========================================
