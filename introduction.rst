@@ -1,8 +1,6 @@
 Introduction
 ============
 
-Information about configuring Onyx can be found in the :ref:`Onyx Configuration Guide <onyx-customization-configuration>`.
-
 Version of Onyx Covered by this Guide
 -------------------------------------
 This version of the Onyx User Guide describes Onyx 1.8.0, in particular, version 1.8.0 of Onyx.
@@ -13,13 +11,12 @@ Since most Onyx users are data collectors, most of this guide explains how to us
 This guide also includes chapters for Participant Managers, Questionnaire Editors, and for System Administrators.
 This guide consists of the following chapters:
 
-* **Chapter 1: Introduction**. Presents Onyx. Includes key concepts that will help you understand Onyx's approach to baseline interviews. For new Onyx users.
-* **Chapter 2: Getting Started**. Presents the Onyx Home page. Explains how to log in to Onyx and the simplest way to start an interview. For new Onyx users.
-* **Chapter 3: Topics ADMINISTRATOR GUIDE**. Explains certain tasks that only system administrators can do such as Installing and deploying Onyx, managing Onyx users, and exporting and purging data.
+* **Introduction**. Presents Onyx. Includes key concepts that will help you understand Onyx's approach to baseline interviews. For new Onyx users.
+* :doc:`ADMINISTRATOR GUIDE <admin/introduction>`. Explains certain tasks that only system administrators can do such as Installing and deploying Onyx, managing Onyx users, and exporting and purging data.
   | Of most interest to system administrators.
-* **Chapter 4: Topics USER GUIDE**. Explains users common usage  such as :
+* :doc:`USER GUIDE <user-guide/introduction/index>`. Explains users common usage  such as :
 
-  + **Viewing Participants**. Presents the Participants page and key concepts related to viewing participants.
+  + :doc:`Viewing Participants <user-guide/viewing-participants/index>`. Presents the Participants page and key concepts related to viewing participants.
     | Explains the ways you can search for a participant in Onyx. For new Onyx users.
   + **Viewing Managing an Interview**. Presents the Interview page and key concepts related to navigating through an interview.
     | Covers various ways to access and exit the stages of an interview: starting, stopping, pausing, resuming, and so on.
@@ -41,3 +38,5 @@ This guide consists of the following chapters:
   + **Creating and Editing Questionnaires**. Explains how to create and edit questionnaires that can be included as stages of an Onyx interview.
     | This work is typically done by researchers involved in design of the study. Of interest to users with the role of questionnaire editor.
   + **Topics for Participant Managers**. Explains certain tasks that only participant managers can do such as receiving and enrolling participants. Of most interest to participant managers.
+
+* :doc:`DEVELOPER GUIDE <developer-guide/index>`. Explains developers common usage

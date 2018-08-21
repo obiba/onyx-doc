@@ -8,12 +8,12 @@ This chapter includes these topics related to viewing participants in the **Part
 * :doc:`Key concepts <key-concepts>` related to viewing participants
 * Procedures related to viewing participants
 
-  + :ref:`Displaying a list of all participants <displaying-list-of-all-participants>`
-  + Viewing appointments for the day
-  + Viewing all interviews in progress
-  + Finding a participant
-  + Viewing a participant's registration information
-  + Determining who has a lock on a participant
+  + :ref:`Displaying a List of All Participants <displaying-a-list-of-all-participants>`
+  + :ref:`Displaying a List of Today's Interviews <displaying-a-list-of-today-s-interviews>`
+  + :ref:`Displaying a List of Participants Currently Being Interviewed <displaying-a-list-of-participants-currently-being-interviewed>`
+  + :ref:`Finding a Participant <finding-a-participant>`
+  + :ref:`Viewing a Participant's Registration Information <viewing-a-participant-s-registration-information>`
+  + :ref:`Determining Who Has a Lock on an Interview <determining-who-has-a-lock-on-an-interview>`
 
 .. toctree::
    :hidden:

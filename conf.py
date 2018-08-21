@@ -163,6 +163,8 @@ rst_epilog = """
 .. |proc| image:: /images/procedures.png
    :height: 20
    :width: 20
+.. |lock| image:: /images/lock.png
+.. |search| image:: /images/search.png
 """
 # -- Extension configuration -------------------------------------------------
 
