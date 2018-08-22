@@ -18,9 +18,12 @@ Targeted at individual studies and study consortia, `OBiBa <http://obiba.org/>`_
    :maxdepth: 1
    :caption: Administrator Guide
 
+   admin/introduction
+   admin/key-concepts
    admin/installation
    admin/server-configuration
    admin/workstation-configuration
+   admin/procedures
 
 .. toctree::
    :maxdepth: 1

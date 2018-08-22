@@ -43,6 +43,8 @@ A barcode that is used for the Participant ID.
 Some studies use a barcode as the source of Participant IDs. The barcodes may be on a blood collection tube, an ID bracelet, or a label of some sort.
 If your study uses barcodes, a barcode scanner will be connected to your Onyx workstation so that you can easily obtain the Participant ID.
 
+.. _interview-status:
+
 |key| Interview Status
 ----------------------
 The current state of a participant's interview. See also Stage Status.
