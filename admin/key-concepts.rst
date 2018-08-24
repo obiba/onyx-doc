@@ -17,7 +17,7 @@ Onyx users have one of these statuses:
 * **Inactive**: The user will not be able to log in. For example, you may want to deactivate a user who is away on leave.
 
 The word that appears in the **Status** column in the **User** administration page is the user's current status.
-Only system administrators can change the status of an Onyx user. See :ref:`Activating and Deactivating Onyx Users <>`.
+Only system administrators can change the status of an Onyx user. See :ref:`Activating and Deactivating Onyx Users <activating-and-deactivating-onyx-users>`.
 
 .. _data-export:
 
@@ -35,7 +35,7 @@ Here are some points worth noting about the Onyx export function:
     + How many export destinations are defined
 
 For detailed information about how the export function is configured, see the :ref:`OBiBa Wiki Onyx+1.6.0+Upgrade <>`.
-Only system administrators can execute a data export from the Onyx user interface. See :ref:`Exporting Data <>`.
+Only system administrators can execute a data export from the Onyx user interface. See :ref:`Exporting data <exporting-data>`.
 
 .. _data-purge:
 
@@ -44,7 +44,7 @@ Only system administrators can execute a data export from the Onyx user interfac
 In Onyx, purging data means deleting data from the Onyx database. Only :ref:`participant data <participant-data>` can be purged—not :ref:`experimental conditions data <experimental-conditions-data>`.
 Configuration of data purging is done entirely in configuration files, not through the Onyx user interface.
 For detailed information about how the purge function is configured, see the :ref:`OBiBa Wiki Onyx+1.6.0+Upgrade <>`.
-Only system administrators can execute a purge from the Onyx user interface. See :ref:`Purging Data <>`.
+Only system administrators can execute a purge from the Onyx user interface. See :ref:`Purging data <purging-data>`.
 
 .. _participant-data:
 

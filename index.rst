@@ -32,6 +32,8 @@ Targeted at individual studies and study consortia, `OBiBa <http://obiba.org/>`_
    user-guide/introduction/index
    user-guide/getting-started/index
    user-guide/viewing-participants/index
+   user-guide/participant-managers/index
+   user-guide/managing-an-interview/index
 
 .. toctree::
    :maxdepth: 1

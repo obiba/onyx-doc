@@ -164,6 +164,7 @@ rst_epilog = """
    :width: 20
 .. |lock| image:: /images/lock.png
 .. |search| image:: /images/search.png
+.. |comment| image:: /images/comment.png
 """
 # -- Extension configuration -------------------------------------------------
 
