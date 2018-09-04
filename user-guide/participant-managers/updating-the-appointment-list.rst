@@ -1,2 +1,0 @@
-Updating the appointment list
-=============================
