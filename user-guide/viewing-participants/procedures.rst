@@ -150,4 +150,4 @@ You can find out who has a lock on the interview as follows:
 
    To see who has a lock on an interview, position the mouse cursor on the lock icon and do not move the mouse.
 
-If necessary, your participant manager can unlock the interview. See :ref:`Unlocking an interview <unlocking-an-interview>`.
+If necessary, your participant manager can unlock the interview. See :doc:`Unlocking an interview </user-guide/participants-manager/unlocking-an-interview>`.
