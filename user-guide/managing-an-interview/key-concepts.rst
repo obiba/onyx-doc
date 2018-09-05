@@ -75,5 +75,74 @@ You use the buttons as follows:
 * **Next** button — Select it to display the next page in the stage.
 * **Previous** button — Select it to display the previous page in the stage if you need to check or change something in that page.
 * **Finish** button — This is only displayed when you are on the last page of a stage. You select it when you are ready to complete the stage.
-* You can also use hot keys to navigate through the pages. See Hot Keys.
+* You can also use hot keys to navigate through the pages. See Hot Keys :ref:`Hot Keys <hot-keys>`.
 
+|key| Administration Button and Administration Dialog
+-----------------------------------------------------
+The **Administration** button is always displayed at the bottom of the page during an interview stage. When you select the **Administration** button, the **Administration** dialog is displayed.
+See :ref:`this figure <the-administration-dialog-for-a-questionnaire-stage>`. You access this dialog when you need to pause or cancel the stage.
+For a questionnaire stage, the dialog includes **First** and **Last** buttons. These buttons allow you to jump directly to the first and last pages that need your input.
+If no pages require your input, they jump to the first page or last page of the questionnaire.
+
+.. _the-administration-dialog-for-a-questionnaire-stage:
+
+.. figure:: /images/theAdministrationDialogForAQuestionnaireStage.png
+   :align: center
+   :alt: The Administration dialog for a questionnaire stage
+
+   The Administration dialog for a questionnaire stage
+
+.. _hot-keys:
+
+|key| Hot Keys
+--------------
+To make the task of completing long questionnaires easier, Onyx allows you to use certain keyboard keys in a special way.
+When you are working in a stage, you can use these hot keys instead of having to use the mouse to select buttons. this figure lists the hot keys available during interview stages.
+
+.. list-table::
+  :widths: 10 20 20 20
+  :header-rows: 1
+
+  * - Onscreen Button
+    - Hot Key
+    - Effect
+    - Comments
+  * - **Next**
+    - The + key on your keyboard
+    - Displays next page of the stage
+    - Don't press Shift. Works for all kinds of stages, but not on the last page of a stage.
+  * - **Previous**
+    - The --- key on your keyboard
+    - Displays previous page of the stage
+    - Don't press Shift. Works for all kinds of stages
+  * - **Finish**
+    - The F key on your keyboard
+    - Finishes the stage. The stage closes and you are returned to the **Interview** page.
+    - Don't press Shift. Works for all kinds of stages, but only on the last page of a stage.
+  * - **Administration**
+    - The A key on your keyboard
+    - Displays the **Administration** dialog.
+    - Don't press Shift. If a text field is selected (the focus is on the text field), this hot key will not work. This is so you will be able to enter the letter "a" in the text field.
+  * - **First**
+    - The Home key on your keyboard
+    - Jumps to the first page that needs your input. If no page requires your input, it jumps to the first page of the questionnaire.
+    - Only works in questionnaire stages
+  * - **Last**
+    - The End key on your keyboard
+    - Jumps to the last page that needs your input. If no page requires your input, it jumps to the last page of the questionnaire.
+    - Only works in questionnaire stages
+  * - The **X** button in the corner of a dialog
+    - The Esc key on your keyboard
+    - Closes any dialog or small window that is displayed on top of a stage page.
+    - Does not work on stage pages
+
+|key| Log
+---------
+In the **Interview** page, a log contains a list of system messages and user comments. A log can either be about the interview as a whole, or about a particular stage of the interview.
+The list is in chronological order---the oldest entry is at the top, and the most recent entry is at the top bottom.
+
+|key| Comment
+-------------
+In the **Interview** page, a comment list only contains comments added by users.
+Depending on which  |comment| button you select, the list of comments will either be about the interview as a whole, or about a particular stage of the interview.
+The list is in chronological order---the oldest entry is at the top, and the most recent entry is at the top bottom.
