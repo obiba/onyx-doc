@@ -33,7 +33,7 @@ Here are the important features of the **Interview** page:
 * | The **Onyx Exit button** (the **X** in the upper right corner of the Onyx window---:ref:`see this figure <the-interview-page>`) is not the same as the **Interview Exit** buttons.
   | If you select the **Onyx Exit button** while in the **Interview** page, Onyx will close immediately without releasing your lock on the interview.
   | The next time anyone (including you) looks for the participant in the **Participants** list, a lock will be displayed on the interview.
-  | A participant manager will have to unlock the interview. See :ref:`Unlocking an Interview <unlocking-an-interview>`.
+  | A participant manager will have to unlock the interview. See :doc:`Unlocking an interview <unlocking-an-interview>`.
 * | **Close** button — You select this button if you need to end the interview early (before all stages are complete), but do not need to withdraw the participant from the study.
   | **CAUTION**: If you select **Close**, you will not be able to resume the interview.
   | Each study defines what will be done with the data acquired to the point of stopping an interview in this way.
