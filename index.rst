@@ -38,6 +38,36 @@ Targeted at individual studies and study consortia, `OBiBa <http://obiba.org/>`_
 .. toctree::
    :maxdepth: 1
    :caption: Developer Guide
-   
+
    developer-guide/index
    developer-guide/onyx-customization-configuration
+   
+Partners and Funders
+====================
+
+The development of this application was made possible thanks to the support of our partners and funders:
+
+.. |mr-logo| image:: https://www.obiba.org/assets/themes/bootstrap/img/logo-maelstrom.png
+ :height: 60px
+ :target: https://www.maelstrom-research.org/
+
+.. |ep-logo| image:: https://www.obiba.org/assets/themes/bootstrap/img/epigeny.png
+ :height: 40px
+ :target: https://www.epigeny.io/
+
+.. |can-logo| image:: https://www.obiba.org/assets/themes/bootstrap/img/canarie.png
+ :height: 60px
+ :target: https://www.canarie.ca/
+
+.. |ecc-logo| image:: https://www.obiba.org/assets/themes/bootstrap/img/eucanconnect.png
+ :height: 50px
+ :target: https://www.eucanconnect.eu/
+
++------------+------------+------------+------------+
+| |mr-logo|  + |ep-logo|  + |can-logo| + |ecc-logo| +
++------------+------------+------------+------------+
+
+Support
+=======
+
+Please visit `OBiBa support <https://www.obiba.org/pages/support/>`_ page.
